@@ -1,0 +1,5 @@
+.env
+__pycache__/
+*.zip
+entrega_parcial2.ipynb
+entrega_parcial1.ipynb
