@@ -21,12 +21,12 @@ def reconocimiento_de_voz():
     speech_recognition_result = speech_recognizer.recognize_once_async().get()#escucha
 
     if speech_recognition_result.reason == speechsdk.ResultReason.RecognizedSpeech:
-        print("Recognized: {}".format(speech_recognition_result.text))
+        return "Recognized: {}".format(speech_recognition_result.text)
     elif speech_recognition_result.reason == speechsdk.ResultReason.NoMatch:
-        print("No speech could be recognized: {}".format(speech_recognition_result.no_match_details))
+        return "No speech could be recognized: {}".format(speech_recognition_result.no_match_details)
     elif speech_recognition_result.reason == speechsdk.ResultReason.Canceled:
         cancellation_details = speech_recognition_result.cancellation_details
         print("Speech Recognition canceled: {}".format(cancellation_details.reason))
         if cancellation_details.reason == speechsdk.CancellationReason.Error:
-            print("Error details: {}".format(cancellation_details.error_details))
-            print("Did you set the speech resource key and endpoint values?")
+            return "Error details: {}".format(cancellation_details.error_details)
+           

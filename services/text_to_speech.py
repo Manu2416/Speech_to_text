@@ -29,6 +29,3 @@ def texto_voz():
 
  
     return(result)
-
-texto_voz()
- 

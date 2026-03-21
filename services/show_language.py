@@ -28,4 +28,3 @@ def ver_idiomas():
         print(f"Error al obtener idiomas: {e}")
         return {}
 
-print(ver_idiomas())

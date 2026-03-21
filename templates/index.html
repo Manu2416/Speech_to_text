@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Traductor Azure</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Traductor Inteligente</h1>
+        
+        <div class="card p-4 shadow-sm">
+            <form id="traductor-form">
+                <div class="mb-3">
+                    <label class="form-label">Texto a traducir:</label>
+                    <textarea name="texto" id="texto" class="form-control" rows="3"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Traducir a:</label>
+                    <select name="idioma_destino" id="idioma_destino" class="form-select">
+                        {% for codigo, nombre in idiomas.items() %}
+                            <option value="{{ codigo }}">{{ nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Traducir Ahora</button>
+            </form>
+
+            <div class="mt-4 p-3 border rounded bg-white" id="resultado-box" style="display:none;">
+                <p><strong>Idioma detectado:</strong> <span id="idioma-detectado"></span></p>
+                <h5>Traducción:</h5>
+                <p id="texto-traducido" class="lead text-primary"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('traductor-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const res = await fetch('/procesar', { method: 'POST', body: formData });
+            const data = await res.json();
+            
+            document.getElementById('resultado-box').style.display = 'block';
+            document.getElementById('idioma-detectado').innerText = data.detectado;
+            document.getElementById('texto-traducido').innerText = data.traducido;
+        };
+    </script>
+</body>
+</html>

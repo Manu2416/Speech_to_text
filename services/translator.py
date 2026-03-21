@@ -36,5 +36,3 @@ def traducir_texto(texto, idioma_origen, idioma_destino):
         return response[0]["translations"][0]["text"]
     except Exception as e:
         return f"Error en la traducción: {str(e)}"
-
-# print(traducir_texto("hello","en","es"))
