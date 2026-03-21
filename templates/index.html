@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,11 +8,11 @@
 </head>
 <body class="bg-light">
     <div class="container mt-5">
-        <h1 class="text-center mb-4">Traductor Inteligente</h1>
-        
+        <h1 class="text-center mb-4">Traductor Inteligente con Voz 🎤🔊</h1>   
         <div class="card p-4 shadow-sm">
             <form id="traductor-form">
                 <div class="mb-3">
+                    <p><strong>Idioma detectado:</strong> <span id="idioma-detectado"></span></p>
                     <label class="form-label">Texto a traducir:</label>
                     <textarea name="texto" id="texto" class="form-control" rows="3"></textarea>
                 </div>
@@ -25,27 +26,75 @@
                     </select>
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100">Traducir Ahora</button>
+                <!-- BOTONES -->
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Traducir</button>
+                    <button type="button" id="btn-voz" class="btn btn-secondary">🎤 Hablar</button>
+                    <button type="button" id="btn-audio" class="btn btn-success">🔊 Escuchar traducción</button>
+                </div>
             </form>
 
+            <!-- RESULTADO -->
             <div class="mt-4 p-3 border rounded bg-white" id="resultado-box" style="display:none;">
-                <p><strong>Idioma detectado:</strong> <span id="idioma-detectado"></span></p>
                 <h5>Traducción:</h5>
                 <p id="texto-traducido" class="lead text-primary"></p>
+
+                <!-- REPRODUCTOR -->
+                <audio id="audio-player" controls style="display:none;"></audio>
             </div>
         </div>
     </div>
 
     <script>
+        // TRADUCCIÓN
         document.getElementById('traductor-form').onsubmit = async (e) => {
             e.preventDefault();
             const formData = new FormData(e.target);
-            const res = await fetch('/procesar', { method: 'POST', body: formData });
+
+            const res = await fetch('/procesar', {
+                method: 'POST',
+                body: formData
+            });
+
             const data = await res.json();
-            
+
             document.getElementById('resultado-box').style.display = 'block';
             document.getElementById('idioma-detectado').innerText = data.detectado;
             document.getElementById('texto-traducido').innerText = data.traducido;
+        };
+
+        // 🎤 SPEECH TO TEXT
+        document.getElementById('btn-voz').onclick = async () => {
+            const res = await fetch('/speech-to-text');
+            const data = await res.json();
+
+            // metemos el texto en el textarea
+            document.getElementById('texto').value = data.texto.replace("Recognized: ", "");
+        };
+
+        // 🔊 TEXT TO SPEECH
+        document.getElementById('btn-audio').onclick = async () => {
+            const texto = document.getElementById('texto-traducido').innerText;
+
+            if (!texto) {
+                alert("Primero traduce algo");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("texto", texto);
+
+            const res = await fetch('/text-to-speech', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await res.json();
+
+            const audioPlayer = document.getElementById('audio-player');
+            audioPlayer.src = data.audio_url + "?t=" + new Date().getTime(); // evita cache
+            audioPlayer.style.display = 'block';
+            audioPlayer.play();
         };
     </script>
 </body>
