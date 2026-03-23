@@ -1,0 +1,175 @@
+/* ====== RESET ====== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', 'Segoe UI', Tahoma, sans-serif;
+}
+
+/* ====== BODY ====== */
+body {
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 50px 20px;
+}
+
+/* ====== CARD ====== */
+.card {
+    background: #fff;
+    border-radius: 25px;
+    padding: 2.5rem 2rem;
+    width: 100%;
+    max-width: 650px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+}
+
+/* ====== TITULO ====== */
+h1 {
+    font-size: 2.2rem;
+    text-align: center;
+    color: #2b2d42;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+h1::after {
+    content: '';
+    display: block;
+    width: 70px;
+    height: 4px;
+    background: #ef233c;
+    margin: 0.5rem auto 0;
+    border-radius: 2px;
+}
+
+/* ====== LABELS ====== */
+label, p strong {
+    font-weight: 600;
+    color: #2b2d42;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+/* ====== TEXTAREA ====== */
+textarea {
+    width: 100%;
+    padding: 1rem 1.2rem;
+    border-radius: 18px;
+    border: 1px solid #dbe2ef;
+    resize: vertical;
+    min-height: 90px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+}
+
+textarea:focus {
+    border-color: #ef233c;
+    box-shadow: 0 0 12px rgba(239,35,60,0.3);
+    outline: none;
+}
+
+/* ====== SELECT ====== */
+select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 18px;
+    border: 1px solid #dbe2ef;
+    background: #f8f9fa;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+select:focus {
+    border-color: #ef233c;
+    box-shadow: 0 0 12px rgba(239,35,60,0.3);
+    outline: none;
+}
+
+/* ====== BOTONES ====== */
+button {
+    padding: 0.75rem 1.2rem;
+    border-radius: 18px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+button#btn-voz {
+    background: #6c757d;
+    color: #fff;
+}
+
+button#btn-voz:hover {
+    background: #495057;
+}
+
+button#btn-audio {
+    background: #ef233c;
+    color: #fff;
+}
+
+button#btn-audio:hover {
+    background: #d90429;
+}
+
+/* ====== RESULTADO ====== */
+#resultado-box {
+    margin-top: 2rem;
+    padding: 1.8rem;
+    border-radius: 20px;
+    background: linear-gradient(145deg, #edf2f4, #f8f9fa);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+#resultado-box:hover {
+    transform: translateY(-4px);
+    background: linear-gradient(145deg, #f1f1f1, #fafafa);
+}
+
+#texto-traducido {
+    font-size: 1.25rem;
+    color: #2b2d42;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+/* ====== AUDIO PLAYER ====== */
+#audio-player {
+    margin-top: 1rem;
+    width: 100%;
+    border-radius: 15px;
+}
+
+/* ====== MICRO-ANIMACIONES ====== */
+textarea, select, button, #resultado-box {
+    transition: all 0.3s ease-in-out;
+}
+
+/* ====== EFECTO DE ENTRADA DEL RESULTADO ====== */
+#resultado-box.show {
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

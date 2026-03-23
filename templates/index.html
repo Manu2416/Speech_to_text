@@ -1,9 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Mi Traductor Azure</title>
+     <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body class="bg-light">
@@ -14,21 +14,21 @@
                 <div class="mb-3">
                     <p><strong>Idioma detectado:</strong> <span id="idioma-detectado"></span></p>
                     <label class="form-label">Texto a traducir:</label>
-                    <textarea name="texto" id="texto" class="form-control" rows="3"></textarea>
+                    <textarea name="texto_a_traducir" id="texto_a_traducir" class="form-control" rows="3"></textarea>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Traducir a:</label>
                     <select name="idioma_destino" id="idioma_destino" class="form-select">
                         {% for codigo, nombre in idiomas.items() %}
-                            <option value="{{ codigo }}">{{ nombre }}</option>
+                            <option value="{{ codigo }}" {% if codigo == 'en' %}selected{% endif %}>{{ nombre }}</option>
                         {% endfor %}
                     </select>
                 </div>
 
                 <!-- BOTONES -->
                 <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-primary">Traducir</button>
+                   
                     <button type="button" id="btn-voz" class="btn btn-secondary">🎤 Hablar</button>
                     <button type="button" id="btn-audio" class="btn btn-success">🔊 Escuchar traducción</button>
                 </div>
@@ -44,58 +44,6 @@
             </div>
         </div>
     </div>
-
-    <script>
-        // TRADUCCIÓN
-        document.getElementById('traductor-form').onsubmit = async (e) => {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-
-            const res = await fetch('/procesar', {
-                method: 'POST',
-                body: formData
-            });
-
-            const data = await res.json();
-
-            document.getElementById('resultado-box').style.display = 'block';
-            document.getElementById('idioma-detectado').innerText = data.detectado;
-            document.getElementById('texto-traducido').innerText = data.traducido;
-        };
-
-        // 🎤 SPEECH TO TEXT
-        document.getElementById('btn-voz').onclick = async () => {
-            const res = await fetch('/speech-to-text');
-            const data = await res.json();
-
-            // metemos el texto en el textarea
-            document.getElementById('texto').value = data.texto.replace("Recognized: ", "");
-        };
-
-        // 🔊 TEXT TO SPEECH
-        document.getElementById('btn-audio').onclick = async () => {
-            const texto = document.getElementById('texto-traducido').innerText;
-
-            if (!texto) {
-                alert("Primero traduce algo");
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append("texto", texto);
-
-            const res = await fetch('/text-to-speech', {
-                method: 'POST',
-                body: formData
-            });
-
-            const data = await res.json();
-
-            const audioPlayer = document.getElementById('audio-player');
-            audioPlayer.src = data.audio_url + "?t=" + new Date().getTime(); // evita cache
-            audioPlayer.style.display = 'block';
-            audioPlayer.play();
-        };
-    </script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

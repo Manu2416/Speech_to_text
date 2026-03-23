@@ -16,16 +16,16 @@ def index():
 
 @app.route('/procesar', methods=['POST'])
 def procesar():
-    texto = request.form.get('texto')
+    texto = request.form.get('texto_a_traducir')
     idioma_destino = request.form.get('idioma_destino')
 
     if not texto:
         return "Escribe algo, anda...", 400
 
-    # 1. Detectamos el idioma original usando tu función
+    # Detectamos el idioma original la funcion detectar
     idioma_origen = detect(texto)
 
-    # 2. Traducimos usando tu función
+    # Traducimos usando la funcion traducir
     resultado = traducir_texto(texto, idioma_origen, idioma_destino)
 
     return jsonify({
