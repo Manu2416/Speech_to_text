@@ -3,15 +3,11 @@ const resultadoBox = document.getElementById('resultado-box');
 const idiomaDetectado = document.getElementById('idioma-detectado');
 const textoTraducido = document.getElementById('texto-traducido');
 let timeout = null;
+function traducirTexto() {
+    clearTimeout(timeout);
 
-textarea.addEventListener('input', () => {
-    
     timeout = setTimeout(async () => {
         const texto = textarea.value.trim();
-        if (!texto) {
-            resultadoBox.style.display = 'none';
-            return;
-        }
 
         const formData = new FormData();
         formData.append('texto_a_traducir', texto);
@@ -32,19 +28,23 @@ textarea.addEventListener('input', () => {
         } catch (error) {
             console.error("Error al traducir:", error);
         }
-    }, 500); // espera 500ms después de que el usuario deje de escribir
-});
+    }, 500);
+}
 
-// 🎤 SPEECH TO TEXT
+textarea.addEventListener('input', traducirTexto);
+
+// SPEECH TO TEXT
 document.getElementById('btn-voz').onclick = async () => {
     const res = await fetch('/speech-to-text');
     const data = await res.json();
 
     // metemos el texto en el textarea
     document.getElementById('texto_a_traducir').value = data.texto.replace("Recognized: ", "");
+
+     textarea.dispatchEvent(new Event('input'));
 };
 
-// 🔊 TEXT TO SPEECH
+// TEXT TO SPEECH
 document.getElementById('btn-audio').onclick = async () => {
     const texto = document.getElementById('texto-traducido').innerText;
 
